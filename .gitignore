@@ -140,5 +140,5 @@ configs/secrets.yaml
 # add your env folder here if its there
 
  *.tsv
- *.xml
+ nlpdata/data.xml
 
