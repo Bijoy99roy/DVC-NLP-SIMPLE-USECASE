@@ -3,10 +3,10 @@ import os
 import shutil
 from tqdm import tqdm
 import logging
-from src.utils.common import read_yaml, create_directory
+from src.utils.common import read_yaml, create_directory, get_df
 from src.utils.data_mgmt import process_posts
 import random
-
+import numpy as np
 
 STAGE = 'TWO'
 
@@ -34,6 +34,13 @@ def main(config_path, params_path):
     featurized_train_data_path = os.path.join(prepared_data_dir_path, artifacts['FEATURIZED_OUT_TRAIN'])
     featurized_test_data_path = os.path.join(featurized_data_dir_path, artifacts['FEATURIZED_OUT_TEST'])
 
+    max_features = params['featurize']['max_features']
+    ngrams = params['featurize']['ngrams']
+
+    df_train = get_df(train_data_path)
+
+    train_word = np.array(df_train.text.str.lower().values.astype('U'))
+    
 
 if __name__ == '__main__':
     args = argparse.ArgumentParser()

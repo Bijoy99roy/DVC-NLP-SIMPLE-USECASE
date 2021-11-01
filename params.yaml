@@ -2,3 +2,7 @@
 prepare:
   split: 0.20
   seed: 2021
+
+featurize:
+  max_features: 5000
+  ngrams: 2
