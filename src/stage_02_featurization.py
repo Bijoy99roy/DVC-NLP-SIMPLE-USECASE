@@ -4,9 +4,10 @@ import shutil
 from tqdm import tqdm
 import logging
 from src.utils.common import read_yaml, create_directory, get_df
-from src.utils.data_mgmt import process_posts
+from src.utils.featurize import save_matrix
 import random
 import numpy as np
+from sklearn.feature_extraction.text import CountVectorizer, TdidfVectorizer
 
 STAGE = 'TWO'
 
@@ -40,6 +41,18 @@ def main(config_path, params_path):
     df_train = get_df(train_data_path)
 
     train_word = np.array(df_train.text.str.lower().values.astype('U'))
+
+    bag_of_words = CountVectorizer(stop_words='english', max_features=max_features, ngram_range=(1, ngrams))
+
+    bag_of_words.fit(train_word)
+
+    train_words_binary_matrix = bag_of_words.transform(train_word)
+
+    tfidf = TdidfVectorizer(smooth_idf=False)
+    tfidf.fit(train_words_binary_matrix)
+
+    train_words_tfidf_matrix = tfidf.transform(train_words_binary_matrix)
+    save_matrix(df_train, train_words_tfidf_matrix, featurized_train_data_path) 
     
 
 if __name__ == '__main__':
