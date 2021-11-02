@@ -30,8 +30,8 @@ stages:
     cmd: python src/stage_01_prepare.py --config=configs/config.yaml --params=params.yaml
     deps:
     - path: configs/config.yaml
-      md5: af90650ad3d4737b117c9a29f3726b00
-      size: 385
+      md5: 15c25f6a8e64e3a6f02d032d162e9cbb
+      size: 464
     - path: nlpdata/data.xml
       md5: a304afb96060aad90176268345e10355
       size: 37891850
@@ -39,8 +39,8 @@ stages:
       md5: 09679acffea1ddb62afdc1d6cbecce6b
       size: 2074
     - path: src/utils/common.py
-      md5: 7b1676d74e67ba27a68e0b79ab20b722
-      size: 807
+      md5: 59fafe6b3e4499bff32e7a609fb6fbb1
+      size: 960
     params:
       params.yaml:
         prepare.seed: 2021
@@ -62,14 +62,14 @@ stages:
       md5: 553034c4cf40efc63c99c19fe98610d0
       size: 18986541
     - path: configs/config.yaml
-      md5: af90650ad3d4737b117c9a29f3726b00
-      size: 385
+      md5: 15c25f6a8e64e3a6f02d032d162e9cbb
+      size: 464
     - path: src/stage_02_featurization.py
       md5: abb12c09f37a79e491db4f79c0794ced
       size: 2981
     - path: src/utils/common.py
-      md5: 7b1676d74e67ba27a68e0b79ab20b722
-      size: 807
+      md5: 59fafe6b3e4499bff32e7a609fb6fbb1
+      size: 960
     - path: src/utils/featurize.py
       md5: 2c2b8ea41ee377d6052d81b84c312bdd
       size: 523
@@ -91,14 +91,14 @@ stages:
       md5: 2c00bf54c1de73a273a0bfe7cf16069e
       size: 11126601
     - path: configs/config.yaml
-      md5: af90650ad3d4737b117c9a29f3726b00
-      size: 385
+      md5: 15c25f6a8e64e3a6f02d032d162e9cbb
+      size: 464
     - path: src/stage_03_train.py
       md5: ceda8b02df51ecd958813ed0145abb20
       size: 2268
     - path: src/utils/common.py
-      md5: 7b1676d74e67ba27a68e0b79ab20b722
-      size: 807
+      md5: 59fafe6b3e4499bff32e7a609fb6fbb1
+      size: 960
     params:
       params.yaml:
         train.min_split: 16
@@ -108,3 +108,33 @@ stages:
     - path: artifacts/model/model.pkl
       md5: 197fa4ce223e2532700b0b8c2d4479d0
       size: 3495234
+  evaluate:
+    cmd: python src/stage_04_evaluate.py --config=configs/config.yaml --params=params.yaml
+    deps:
+    - path: artifacts/feature/test.pkl
+      md5: ed6931cdc5a1a2afe38c87d862e4d3fd
+      size: 2845757
+    - path: artifacts/model/model.pkl
+      md5: 197fa4ce223e2532700b0b8c2d4479d0
+      size: 3495234
+    - path: configs/config.yaml
+      md5: 15c25f6a8e64e3a6f02d032d162e9cbb
+      size: 464
+    - path: src/stage_04_evaluate.py
+      md5: f03cfeaeb45352fb40b667be15c6f938
+      size: 2876
+    - path: src/utils/common.py
+      md5: 59fafe6b3e4499bff32e7a609fb6fbb1
+      size: 960
+    outs:
+    - path: prc.json
+      md5: 0e2cf1d4583996b62678bc407643fce7
+      size: 130421
+    - path: roc.json
+      md5: 05cd9a05a4a10918a1c149f24c83c8ec
+      size: 92439
+    - path: scores.json
+      md5: 0ed2f09893e5148348005ceb473d5792
+      size: 76
+  run_plots_command:
+    cmd: dvc plots diff
