@@ -7,7 +7,7 @@ from src.utils.common import read_yaml, create_directory, get_df
 from src.utils.featurize import save_matrix
 import random
 import numpy as np
-from sklearn.feature_extraction.text import CountVectorizer, TdidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 
 STAGE = 'TWO'
 
@@ -32,7 +32,7 @@ def main(config_path, params_path):
     featurized_data_dir_path = os.path.join(artifacts['ARTIFACTS_DIR'], artifacts['FEATURIZED_DATA'])
     
     create_directory([featurized_data_dir_path])
-    featurized_train_data_path = os.path.join(prepared_data_dir_path, artifacts['FEATURIZED_OUT_TRAIN'])
+    featurized_train_data_path = os.path.join(featurized_data_dir_path, artifacts['FEATURIZED_OUT_TRAIN'])
     featurized_test_data_path = os.path.join(featurized_data_dir_path, artifacts['FEATURIZED_OUT_TEST'])
 
     max_features = params['featurize']['max_features']
@@ -48,7 +48,7 @@ def main(config_path, params_path):
 
     train_words_binary_matrix = bag_of_words.transform(train_word)
 
-    tfidf = TdidfVectorizer(smooth_idf=False)
+    tfidf = TfidfTransformer(smooth_idf=False)
     tfidf.fit(train_words_binary_matrix)
 
     train_words_tfidf_matrix = tfidf.transform(train_words_binary_matrix)
