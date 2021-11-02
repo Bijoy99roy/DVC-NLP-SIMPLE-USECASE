@@ -54,6 +54,12 @@ def main(config_path, params_path):
     train_words_tfidf_matrix = tfidf.transform(train_words_binary_matrix)
     save_matrix(df_train, train_words_tfidf_matrix, featurized_train_data_path) 
     
+    df_test = get_df(test_data_path)
+    test_word = np.array(df_test.text.str.lower().astype('U'))
+    test_word_binary_matrix = bag_of_words.transform(test_word)
+    test_words_tfidf_matrix = tfidf.transform(test_word_binary_matrix)
+
+    save_matrix(df_test, test_words_tfidf_matrix, featurized_test_data_path)
 
 if __name__ == '__main__':
     args = argparse.ArgumentParser()
